@@ -750,6 +750,14 @@ static void onIncomingCall(pjsua_acc_id acc_id, pjsua_call_id call_id, pjsip_rx_
             }
         } else {
             VSLLogWarning(@"Could not find a call with if %d.", call_id);
+            VSLCall *call = [[VSLCall alloc]
+                                    initInboundCallWithCallId:call_id
+                                    account:account
+                                    andInvite:[[SipInvite alloc] initWithInvitePacket:rdata->pkt_info.packet]];
+            [[[VialerSIPLib sharedInstance] callManager] addCall:call];
+            if ([VSLEndpoint sharedEndpoint].incomingCallForegroundBlock) {
+                [VSLEndpoint sharedEndpoint].incomingCallForegroundBlock(call);
+            }
         }
         call = nil;
     } else {

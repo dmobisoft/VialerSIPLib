@@ -81,6 +81,8 @@ typedef NS_ENUM(NSInteger, VSLEndpointState) {
  */
 @property (copy, nonatomic) void (^ _Nonnull incomingCallBlock)(VSLCall * _Nullable call);
 
+@property (copy, nonatomic) void (^ _Nonnull incomingCallForegroundBlock)(VSLCall * _Nullable call);
+
 /**
  * The missedCallBlock will be called when a call is completed elsewhere or the original call hung up.
  */

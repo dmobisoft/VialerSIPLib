@@ -76,6 +76,33 @@ NSString * const CallKitProviderDelegateInboundCallRejectedNotification = @"Call
     [self.provider reportCallWithUUID:call.uuid updated:update];
 }
 
+- (void)reportIncomingCallForeground:(VSLCall *)call {
+    if (@available(iOS 10.0, *)) {
+        CXCallUpdate *update = [[CXCallUpdate alloc] init];
+        update.localizedCallerName = call.callerName;
+        
+        NSString * handleValue = @"";
+        if ([update.localizedCallerName length] == 0) { // Doing this to not let the caller contact name override the platform's one
+            handleValue = call.callerNumber;
+        }
+        CXHandle *handle = [[CXHandle alloc] initWithType:CXHandleTypePhoneNumber value:handleValue];
+        update.remoteHandle = handle;
+        
+        VSLLogVerbose(@"UUID as sent to CallKit provider: %@", call.uuid.UUIDString);
+        [self.provider reportNewIncomingCallWithUUID:call.uuid update:update completion:^(NSError * _Nullable error) {
+            if (error) {
+                VSLLogError(@"Call(%@). CallKit report incoming call error: %@", call.uuid.UUIDString, error);
+                NSError *hangupError;
+                [call hangup:&hangupError];
+                
+                if (hangupError){
+                    VSLLogError(@"Error hanging up call(%@) after CallKit error:%@", call.uuid.UUIDString, error);
+                }
+            }
+        }];
+    }
+}
+
 // MARK: - CXProviderDelegate
 /**
  * Delegate method called when the user accepts the incoming call from within the

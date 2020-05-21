@@ -37,4 +37,6 @@ extern NSString * __nonnull const CallKitProviderDelegateInboundCallRejectedNoti
  */
 - (void)reportIncomingCall:(VSLCall * _Nonnull)call;
 
+- (void)reportIncomingCallForeground:(VSLCall * _Nonnull)call;
+
 @end

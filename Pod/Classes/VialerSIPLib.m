@@ -163,6 +163,10 @@ NSString * const VSLNotificationUserInfoErrorStatusMessageKey = @"VSLNotificatio
     [VSLEndpoint sharedEndpoint].incomingCallBlock = incomingCallBlock;
 }
 
+- (void)setIncomingCallForegroundBlock:(void (^)(VSLCall * _Nonnull))incomingCallForegroundBlock {
+    [VSLEndpoint sharedEndpoint].incomingCallForegroundBlock = incomingCallForegroundBlock;
+}
+
 - (void)setMissedCallBlock:(void (^)(VSLCall * _Nonnull))missedCallBlock {
     [VSLEndpoint sharedEndpoint].missedCallBlock = missedCallBlock;
 }

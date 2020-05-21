@@ -267,6 +267,8 @@ typedef NS_ENUM(NSUInteger, VialerSIPLibErrors) {
  */
 - (void)setIncomingCallBlock:(void(^ _Nonnull )(VSLCall * _Nonnull call))incomingCallBlock;
 
+- (void)setIncomingCallForegroundBlock:(void(^ _Nonnull )(VSLCall * _Nonnull call))incomingCallForegroundBlock;
+
 /**
  * Set the missed block for when a call is missed.
  *
